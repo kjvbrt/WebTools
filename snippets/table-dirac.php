@@ -50,9 +50,10 @@
                       if ($sample['cross-section'] === 'Unknown') {
                         echo 'Unknown';
                       } else if ($sample['cross-section-error'] === 'Unknown') {
-                        echo "{$sample['cross-section']} pb";
+                        echo number_format($sample['cross-section'], 4, '.', '\'') . " pb";
                       } else {
-                        echo "{$sample['cross-section']} &pm; {$sample['cross-section-error']} pb";
+                        echo number_format($sample['cross-section'], 4, '.', '\'') . " &pm; " .
+                             number_format($sample['cross-section-error'], 4, '.', '\'') . " pb";
                       } ?>
                   </div>
                   <div class="col p-3 text-left">
@@ -70,17 +71,17 @@
               </div>
               <div class="sample-bottom rounded-bottom ps-4 bg-bottom-<?= $sample['status'] ?>">
                 <div class="row">
-                  <div class="col p-3 text-left">
+                  <div class="col-8 p-3 text-left">
                     <b>Total number of events</b><br>
                     <?= $sample["total-number-of-events"] ?>
                   </div>
-                  <div class="col p-3 text-left">
+                  <div class="col-4 p-3 text-left">
                     <b>Number of events per file</b><br>
                     <?= $sample["number-of-events-per-file"] ?>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col p-3 text-left">
+                  <div class="col-8 p-3 text-left">
                     <?php if (count($sample["paths"]) > 1): ?>
                     <b>EOS Locations</b>
                     <?php else: ?>
@@ -92,7 +93,7 @@
                     <?php endforeach ?>
                     </ul>
                   </div>
-                  <div class="col p-3 text-left">
+                  <div class="col-4 p-3 text-left">
                     <b>Produced by</b><br>
                     <?= $sample["production-manager"] ?>
                   </div>

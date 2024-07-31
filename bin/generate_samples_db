@@ -43,7 +43,12 @@ def load_augments(augments_path: str) -> Any:
 
     try:
         with open(augments_path, 'r', encoding='utf-8') as infile:
-            return json.load(infile)
+            json_text = ''
+            for line in infile:
+                if line.startswith('#'):
+                    continue
+                json_text += line
+            return json.loads(json_text)
     except json.decoder.JSONDecodeError:
         print('ERROR: The augments file is not valid JSON!')
         print('       Aborting...')
@@ -52,7 +57,8 @@ def load_augments(augments_path: str) -> Any:
     return None
 
 
-def run(transf_path: str, augments_path: str, db_path: str):
+def run(transf_path: str, augments_path: str, db_path: str,
+        verbose: bool = False):
     '''
     Compare the transformations and augments and create samples db.
     '''
@@ -75,8 +81,9 @@ def run(transf_path: str, augments_path: str, db_path: str):
 
     for transf_id, transformation in transf_info['transformations'].items():
         if transf_id not in augments_info['augments'].keys():
-            print('Warning: Augments file does not contain sample '
-                  f'{transf_id}!')
+            if verbose:
+                print('Warning: Augments file does not contain sample '
+                      f'{transf_id}!')
             continue
 
         augment = {}
@@ -101,8 +108,13 @@ def run(transf_path: str, augments_path: str, db_path: str):
             sample['cross-section'] = transformation['cross-section']
         else:
             sample['cross-section'] = 'Unknown'
-        # Sometimes transformation info contains 0 or empty string
-        if float(sample['cross-section']) == 0.:
+        # Sometimes transformation info contains null, 0 or empty string
+        if sample['cross-section'] is None:
+            sample['cross-section'] = 'Unknown'
+        try:
+            if float(str(sample['cross-section'])) == 0.:
+                sample['cross-section'] = 'Unknown'
+        except ValueError:
             sample['cross-section'] = 'Unknown'
         if sample['cross-section'] == '':
             sample['cross-section'] = 'Unknown'
@@ -115,8 +127,10 @@ def run(transf_path: str, augments_path: str, db_path: str):
                 transformation['cross-section-error']
         else:
             sample['cross-section-error'] = 'Unknown'
-        # Sometimes transformation info contains 0 or empty string
+        # Sometimes transformation info contains null or empty string
         if sample['cross-section-error'] == '':
+            sample['cross-section-error'] = 'Unknown'
+        if sample['cross-section-error'] is None:
             sample['cross-section-error'] = 'Unknown'
 
         # Efficiency
@@ -128,7 +142,14 @@ def run(transf_path: str, augments_path: str, db_path: str):
         # Efficiency info
         if 'efficiency-info' in augment:
             sample['efficiency-info'] = augment['efficiency-info']
+        elif 'efficiency-info' in transformation:
+            sample['efficiency-info'] = transformation['efficiency-info']
         else:
+            sample['efficiency-info'] = ''
+        # Some samples have FIXME string
+        if sample['efficiency-info'] is None:
+            sample['efficiency-info'] = ''
+        if 'FIXME:' in sample['efficiency-info']:
             sample['efficiency-info'] = ''
 
         # Total sum of weights
@@ -154,7 +175,10 @@ def run(transf_path: str, augments_path: str, db_path: str):
 
         # Paths
         if 'path' in transformation:
-            sample['paths'] = transformation['path']
+            if isinstance(transformation['path'], str):
+                sample['paths'] = [transformation['path']]
+            else:
+                sample['paths'] = transformation['path']
         else:
             sample['paths'] = []
 
@@ -181,6 +205,8 @@ def main():
         description='(Re)Generate FCC samples database'
     )
 
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Make console output more verbose')
     parser.add_argument('-t', '--transf', type=str, required=True,
                         help='Location for the Dirac transformations file')
     parser.add_argument('-a', '--augments', type=str, required=True,
@@ -199,7 +225,7 @@ def main():
         print('       Aborting...')
         return sys.exit(1)
 
-    run(args.transf, args.augments, args.db)
+    run(args.transf, args.augments, args.db, args.verbose)
 
     return sys.exit(0)
 
