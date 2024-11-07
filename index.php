@@ -37,7 +37,7 @@ $evtType = 'none';
       <h2>Accelerators</h2>
       The FCC integrated program includes two accelerator proposals:
       <div class="list-group mt-3">
-        <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/FCCee/index.php">FCC-ee</a>
+        <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/fcc-ee/index.php">FCC-ee</a>
         <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/FCChh/index.php">FCC-hh</a>
       </div>
     </article>
