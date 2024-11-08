@@ -1,42 +1,3 @@
-<?php if ($layer === 'table'): ?>
-<?php
-$lname=array();
-if ($genType === 'stdhep' || $genType === 'lhe') {
-  $lname=array('#', 'Name', 'Nevents',
-               'Nfiles', 'Nbad', 'Neos', 'Size [GB]',
-               'Output Path', 'Main Process', 'Final States',
-               'Matching Param', 'Cross Section [pb]');
-}
-if ($evtType === 'delphes') {
-  $lname=array('#', 'Name', 'Nevents', 'Nweights',
-               'Nfiles', 'Nbad', 'Neos', 'Size [GB]',
-               'Output Path', 'Main Process', 'Final States',
-               'Cross Section [pb]', 'K-factor', 'Matching Eff.');
-}
-
-$txt_file = file_get_contents($dataFilePath);
-
-$dataFileModTime = date("F d Y H:i", filemtime($dataFilePath));
-
-$rows = explode("\n", $txt_file);
-
-$NbrCol = count($lname); // $NbrCol : le nombre de colonnes
-
-foreach($rows as $row => $data)
-  {
-    // get row data
-    $row_data = explode(',,', $data);
-
-    for ($i=0; $i<$NbrCol-1; $i++)
-      {
-        $info[$row][$lname[$i+1]] = $row_data[$i] ?? '';
-      }
-  }
-
-$NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
-?>
-<?php endif ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -46,30 +7,10 @@ $NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
       $title = '';
       if (array_key_exists($det, $detectorNames)) {
         $title .= $detectorNames[$det] . ' | ';
-      } else {
-        $title .= $det . ' | ';
       }
 
-      if ($campaign === 'dev') {
-        $title .= 'Dev | ';
-      }
-      if ($campaign === 'spring2021') {
-        $title .= 'Spring 2021 | ';
-      }
-      if ($campaign === 'spring2021-training') {
-        $title .= 'Spring 2021 &ndash; training | ';
-      }
-      if ($campaign === 'prefall2022') {
-        $title .= 'Pre-fall 2022 | ';
-      }
-      if ($campaign === 'prefall2022-training') {
-        $title .= 'Pre-fall 2022 &ndash; training | ';
-      }
-      if ($campaign === 'winter2023') {
-        $title .= 'Winter 2023 | ';
-      }
-      if ($campaign === 'winter2023-training') {
-        $title .= 'Winter 2023 &ndash; training | ';
+      if (array_key_exists($campaign, $campaignNames)) {
+        $title .= $campaignNames[$campaign] . ' | ';
       }
 
       if ($genType === 'stdhep') {
@@ -106,8 +47,7 @@ $NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
     <?php include BASE_PATH . '/header.php'; ?>
 
     <article id="sample-article" class="container-lg">
-      <p class="mt-3 mb-1 text-end text-secondary">Last update: <?= $dataFileModTime ?> UTC.</p>
-      <h1 class="mt-2"><?php
+      <h1 class="mt-5"><?php
         $title = 'FCC-ee';
 
         if ($evtType === 'gen') {
@@ -127,32 +67,12 @@ $NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
           $title .= ' | Les Houches';
         }
 
-        if ($campaign === 'dev') {
-          $title .= ' | Dev';
-        }
-        if ($campaign === 'spring2021') {
-          $title .= ' | Spring 2021';
-        }
-        if ($campaign === 'spring2021-training') {
-          $title .= ' | Spring 2021 &ndash; training';
-        }
-        if ($campaign === 'prefall2022') {
-          $title .= ' | Pre-fall 2022';
-        }
-        if ($campaign === 'prefall2022-training') {
-          $title .= ' | Pre-fall 2022 &ndash; training';
-        }
-        if ($campaign === 'winter2023') {
-          $title .= ' | Winter 2023';
-        }
-        if ($campaign === 'winter2023-training') {
-          $title .= ' | Winter 2023 &ndash; training';
+        if (array_key_exists($campaign, $campaignNames)) {
+          $title .= ' | ' . $campaignNames[$campaign];
         }
 
         if (array_key_exists($det, $detectorNames)) {
           $title .= ' | ' . $detectorNames[$det];
-        } else {
-          $title .= ' | ' . $det;
         }
 
         $title .= ' Samples';
@@ -164,34 +84,10 @@ $NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
         <em><?= $description ?></em>
       </p>
 
-      <?php if ($evtType === 'delphes' || $evtType === 'stdhep'): ?>
+      <?php if ($evtType === 'delphes' || $genType === 'stdhep'): ?>
       <p class="mt-5">
         <a href="https://cern.ch/key4hep/">Key4hep</a> stack used during the generation of the
-        <?php
-          $campaignName = '';
-          if ($campaign === 'dev') {
-            $campaignName = 'dev';
-          }
-          if ($campaign === 'spring2021') {
-            $campaignName = 'spring2021';
-          }
-          if ($campaign === 'spring2021-training') {
-            $campaignName = 'spring2021_training';
-          }
-          if ($campaign === 'prefall2022') {
-            $campaignName = 'pre_fall2022';
-          }
-          if ($campaign === 'prefall2022-training') {
-            $campaignName = 'pre_fall2022_training';
-          }
-          if ($campaign === 'winter2023') {
-            $campaignName = 'winter2023';
-          }
-          if ($campaign === 'winter2023-training') {
-            $campaignName = 'winter2023_training';
-          }
-        ?>
-        <code><?= $campaignName ?></code> samples was:
+        <code><?= $campaignTags[$campaign] ?></code> samples was:
         <pre><code><?= $key4hepStacks[$campaign] ?></code></pre>
       </p>
       <?php endif ?>
@@ -200,19 +96,24 @@ $NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
         <?php
           $statUrl = BASE_URL.'/data/FCCee/stat';
 
-          if ($evtType === 'stdhep') {
+          if ($genType === 'lhe') {
+            $statUrl .= 'lhe';
+          }
+
+          if ($genType === 'stdhep') {
             $statUrl .= '_stdhep_';
           }
+
           if ($evtType === 'delphes') {
             $statUrl .= 'delphes';
           }
 
-          $statUrl .= $campaignName;
+          if (array_key_exists($campaign, $campaignTags)) {
+            $statUrl .= $campaignTags[$campaign];
+          }
 
           if (array_key_exists($det, $detectorNames)) {
             $statUrl .= '_' . str_replace(' ', '_', $detectorNames[$det]);
-          } else {
-            $statUrl .= '_' . $det;
           }
 
           $statUrl .= '.html';
@@ -220,7 +121,7 @@ $NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
         Additional stats about the production can be found <a href="<?= $statUrl ?>">here</a>.
       </p>
 
-      <?php include BASE_PATH . '/table.php'; ?>
+      <?php include BASE_PATH . '/includes/table-event-producer.php'; ?>
     </article>
 
     <?php include BASE_PATH . '/footer.php'; ?>

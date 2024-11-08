@@ -20,12 +20,12 @@
       <div class="container">
         <?php foreach ($samples as $sample_id => $sample): ?>
         <?php $tab_index++; ?>
-        <div class="row mb-2">
+        <div class="row">
           <div class="col">
-            <div class="sample-box focus-ring rounded"
+            <div class="mb-2 sample-box focus-ring rounded"
                  tabIndex="<?= $tab_index ?>"
                  data-search-string="<?= $sample["name"] ?> <?= $sample_id ?> <?= $sample['status'] ?> <?= $sample["production-manager"] ?>">
-              <div class="sample-top rounded ps-4 bg-top-<?= $sample['status'] ?>">
+              <div class="sample-top rounded ps-4 bg-top-<?= $sample['status'] ?> bg-top-<?= $sample['status'] ?>-highlight">
                 <div class="row">
                   <!-- Name -->
                   <div class="col p-3 text-left">
@@ -150,4 +150,4 @@
       </div>
 
 
-      <script src="<?= BASE_URL ?>/js/table-dirac.js"></script>
+      <script src="<?= BASE_URL ?>/js/table.js"></script>

@@ -14,6 +14,10 @@ define('SAMPLEDB_PATH',
 // Key4hep stacks
 $key4hepStacks = $config_array['stacks']['key4hepStacks'];
 
+// Campaigns
+$campaignNames = $config_array['campaigns']['campaignNames'];
+$campaignTags = $config_array['campaigns']['campaignTags'];
+
 // Detectors
 $detectorNames = $config_array['detectors']['detectorNames'];
 $campaignDetectors = $config_array['campaignDetectors'];

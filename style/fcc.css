@@ -20,6 +20,9 @@ article {
 .bg-top-stopped {
   background-color: #c9f2c2 !important;
 }
+.bg-top-stopped-highlight:hover {
+  background-color: #d7f5d2 !important;
+}
 
 .bg-bottom-stopped {
   background-color: #e3fcde !important;
@@ -28,6 +31,9 @@ article {
 
 .bg-top-active {
   background-color: #f5e4b0 !important;
+}
+.bg-top-active-highlight:hover {
+  background-color: #f7eac1 !important;
 }
 
 .bg-bottom-active {

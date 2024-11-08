@@ -1,25 +1,3 @@
-<?php if ($layer = 'table'): ?>
-<?php
-$rows = explode("\n", $txt_file);
-
-$NbrCol = count($lname); // $NbrCol : le nombre de colonnes
-
-$info = array();
-foreach($rows as $row => $data)
-  {
-    //get row data
-    $row_data = explode(',,', $data);
-
-    for ($i=0; $i<$NbrCol-1; $i++)
-      {
-        $info[$row][$lname[$i+1]] = $row_data[$i] ?? '';
-      }
-  }
-
-$NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
-?>
-<?php endif ?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -131,7 +109,7 @@ $NbrLigne = count($info);  // $NbrLigne : le nombre de lignes
         Additional stats about the production can be found <a href="<?= $statUrl ?>">here</a>.
       </p>
 
-      <?php include BASE_PATH . '/table.php'; ?>
+      <?php include BASE_PATH . '/includes/table-event-producer.php'; ?>
     </article>
 
     <?php include BASE_PATH . '/footer.php'; ?>

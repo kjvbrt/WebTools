@@ -1,36 +1,97 @@
-function search() {
-  // Declare variables
-  // var input, filter, table, tr, td, i;
-  const input = document.getElementById("sample-search-input");
-  const filter = input.value.toUpperCase();
-  const table = document.getElementById("sample-table");
-  const tr = table.getElementsByTagName("tr");
+// Filter sample information boxed based on the filter string
+const filterSamples = function() {
+  const filterStr = this.value.toLowerCase();
+  const sampleBoxes = document.getElementsByClassName("sample-box");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (let i = 0; i < tr.length; i++) {
-    const td = tr[i].getElementsByTagName("td")[1];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
+  for (let sampleBox of sampleBoxes) {
+    const sampleName = sampleBox.dataset.searchString.toLowerCase();
+    if (sampleName.indexOf(filterStr) > -1) {
+      sampleBox.style.display = "";
+    } else {
+      sampleBox.style.display = "none";
     }
   }
+};
+
+document.getElementById("sample-filter").addEventListener('keyup', filterSamples);
+
+
+// Event listener(s) to expand/collapse the sample information boxes
+const sampleElems = document.getElementsByClassName("sample-box");
+
+const moreInfoToggle = function() {
+  const topElems = this.getElementsByClassName("sample-top");
+  if (topElems.length < 1) {
+    return;
+  }
+  const topElem = topElems[0];
+
+  const bottomElems = this.getElementsByClassName("sample-bottom");
+  if (bottomElems.length < 1) {
+    return;
+  }
+  const bottomElem = bottomElems[0];
+
+  if (bottomElem.style.display === "") {
+    // Show bottom
+    bottomElem.style.display = "block";
+    // Remove highlight
+    for (className of topElem.classList) {
+      if (className.includes('highlight')) {
+        topElem.classList.remove(className);
+        break;
+      }
+    }
+    return;
+  }
+  if (bottomElem.style.display === "block") {
+    // Hide bottom
+    bottomElem.style.display = "";
+    // Allow highlight
+    for (className of topElem.classList) {
+      if (className.includes('bg-top-')) {
+        topElem.classList.add(className + '-highlight');
+        break;
+      }
+    }
+    return;
+  }
+};
+
+for (var i = 0; i < sampleElems.length; i++) {
+  sampleElems[i].addEventListener('dblclick', moreInfoToggle);
+  sampleElems[i].addEventListener('mousedown', function(event) {
+    if (event.detail > 1) {
+      event.preventDefault();
+      // of course, you still do not know what you prevent here...
+      // You could also check event.ctrlKey/event.shiftKey/event.altKey
+      // to not prevent something useful.
+      // from:
+      // https://stackoverflow.com/questions/880512/prevent-text-selection-after-double-click
+    }
+  }, false);
 }
 
-const tableExpandBtn = document.getElementById("table-expand-btn");
-tableExpandBtn.addEventListener("click", (evt) => {
-  const article = document.getElementById("sample-article");
-  if (tableExpandBtn.value !== "expanded") {
-    article.classList.remove("container-lg");
-    article.classList.add("container-fluid");
-    tableExpandBtn.innerHTML = "Shrink table";
-    tableExpandBtn.value = "expanded";
-  } else {
-    article.classList.remove("container-fluid");
-    article.classList.add("container-lg");
-    tableExpandBtn.innerHTML = "Expand table";
-    tableExpandBtn.value = "shrunk";
+// Event listener copy sample path
+const samplePathCopyElems = document.getElementsByClassName("copy-sample-path");
+
+const copyPath = function() {
+  const samplePath = this.dataset.path;
+  navigator.clipboard.writeText(samplePath);
+
+  const clipboardElems = this.getElementsByClassName("bi-clipboard");
+  if (clipboardElems.length < 1) {
+    return;
   }
-});
+  clipboardElems[0].classList.add("d-none");
+
+  const clipboardCheckElems = this.getElementsByClassName("bi-clipboard-check");
+  if (clipboardCheckElems.length < 1) {
+    return;
+  }
+  clipboardCheckElems[0].classList.remove("d-none");
+};
+
+for (var i = 0; i < samplePathCopyElems.length; i++) {
+  samplePathCopyElems[i].addEventListener('click', copyPath);
+}
