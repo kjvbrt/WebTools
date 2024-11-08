@@ -80,7 +80,7 @@
           <div class="col">
             <div class="mb-2 sample-box focus-ring rounded"
                  tabIndex="<?= $tab_index ?>"
-                 data-search-string="<?= $sample["name"] ?> <?= $sample_id ?> <?= $sample['status'] ?>">
+                 data-search-string="<?= $sample["name"] ?>">
               <div class="sample-top rounded ps-4 bg-top-<?= $sample['status'] ?> bg-top-<?= $sample['status'] ?>-highlight">
                 <div class="row">
                   <!-- Process name / Sample path -->
