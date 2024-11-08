@@ -1,9 +1,4 @@
 <?php
-ini_set('display_errors', '1');
-error_reporting(E_ALL);
-$debug=(isset($_GET["debug"])?$_GET["debug"]:false);
-if(!isset($gobase)){$gobase="";}
-
 require('config.php');
 
 $layer = 'top';
@@ -48,4 +43,4 @@ $evtType = 'none';
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
             crossorigin="anonymous"></script>
   </body>
-</html>	
+</html>
