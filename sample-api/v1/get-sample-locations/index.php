@@ -23,7 +23,9 @@ if (!array_key_exists($data['process-name'], $samples)) {
   exit(json_encode($response));
 }
 
-$data['location'] = $samples[$data['process-name']]['path'];
+$locations = array();
+$locations['cern'] = $samples[$data['process-name']]['path'];
+$data['locations'] = $locations;
 
 // Build response
 $response['data'] = $data;
