@@ -225,6 +225,12 @@
               <a class="ms-1 nav-link text-light<?php if ($campaign === 'v04'): ?> active bg-green<?php endif ?>" href="<?= BASE_URL ?>/fcc-hh/Delphesevents_fcc_v04.php">v0.4</a>
             </li>
             <?php endif ?>
+            <!-- FCC-hh | Delphes | v05_scenarioI -->
+            <?php if ($layer === 'campaign' || $layer === 'table'): ?>
+            <li class="nav-item">
+              <a class="ms-1 nav-link text-light<?php if ($campaign === 'v05-scenarioI'): ?> active bg-green<?php endif ?>" href="<?= BASE_URL ?>/fcc-hh/Delphesevents_fcc_v05_scenarioI.php">v0.5 scenario I.</a>
+            </li>
+            <?php endif ?>
             <?php endif ?>
             <!-- FCC-hh | Full Sim -->
             <?php if ($layer === 'evt-type' || $evtType === 'full-sim'): ?>

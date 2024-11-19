@@ -17,6 +17,9 @@
       if ($campaign === 'v04') {
         $title .= 'v0.4 | ';
       }
+      if ($campaign === 'v05-scenarioI') {
+        $title .= 'v0.5 scenario I. | ';
+      }
       if ($campaign === 'lhe') {
         $title .= 'Les Houches | ';
       }
@@ -73,6 +76,9 @@
         if ($campaign === 'v04') {
           $title .= ' | v0.4';
         }
+        if ($campaign === 'v05-scenarioI') {
+          $title .= ' | v0.5 scenario I.';
+        }
         if ($campaign === 'lhe') {
           $title .= ' | Les Houches';
         }
@@ -97,7 +103,7 @@
           if ($evtType === 'delphes') {
             $statUrl .= 'delphesfcc';
             $statUrl .= '_';
-            $statUrl .= $campaign;
+            $statUrl .= str_replace('-', '_', $campaign);
           }
 
           if ($evtType === 'full-sim') {
