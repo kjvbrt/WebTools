@@ -92,6 +92,17 @@
         <em><?= $description ?></em>
       </p>
 
+      <?php if (isset($stack)): ?>
+      <p>
+        In the campaign the following Key4hep stack has been used:
+        <pre>
+          <code>
+            <?= $stack ?>
+          </code>
+        </pre>
+      </p>
+      <?php endif ?>
+
       <p class="mt-3">
         <?php
           $statUrl = BASE_URL . '/data/FCChh/stat';
