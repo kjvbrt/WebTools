@@ -27,3 +27,7 @@
   Order Allow,Deny
   Deny from all
 </Files>
+
+RewriteEngine On
+RewriteRule ^FCCee/(.*)$ /fcc-ee/$1 [R=301,NC,L]
+RewriteRule ^FCChh/(.*)$ /fcc-hh/$1 [R=301,NC,L]
