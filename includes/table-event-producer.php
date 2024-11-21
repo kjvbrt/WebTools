@@ -1,6 +1,7 @@
 <?php
   // First lets try to load the samples from the JSON file
   $dataFilePathJSON = substr_replace($dataFilePath , 'json', strrpos($dataFilePath , '.') + 1);
+  $loadedFromJSON = false;
   if (file_exists($dataFilePathJSON)) {
     $json_file = file_get_contents($dataFilePathJSON);
     if ($json_file === false) {
@@ -12,8 +13,8 @@
       die("ERROR: Can't read sample information!<br>Please contact site administrator(s).");
     }
 
+    $loadedFromJSON = true;
     $last_update = filemtime($dataFilePathJSON);
-
     $samples = $json_data['processes'];
     $totalInfo = $json_data['total'];
 
@@ -30,21 +31,21 @@
     $colNames = array();
     if ($evtType === 'gen') {
       $colNames = array('process-name', 'n-events',
-                        'n-files', 'n-files-bad', 'n-files-eos', 'size',
+                        'n-files-good', 'n-files-bad', 'n-files-eos', 'size',
                         'path', 'description', 'comment',
                         'matching-param',
                         'cross-section');
     }
     if ($evtType === 'delphes') {
       $colNames = array('process-name', 'n-events', 'sum-of-weights',
-                        'n-files', 'n-files-bad', 'n-files-eos', 'size',
+                        'n-files-good', 'n-files-bad', 'n-files-eos', 'size',
                         'path', 'description', 'comment',
                         'cross-section',
                         'k-factor', 'matching-eff');
     }
     if ($evtType === 'full-sim' && $acc === 'fcc-hh') {
-      $colNames = array('process-name', 'n-events', 'n-files', 'n-files-eos',
-                        'n-files-bad', 'size',
+      $colNames = array('process-name', 'n-events',
+                        'n-files-good', 'n-files-eos', 'n-files-bad', 'size',
                         'aleksa', 'azaborow', 'cneubuse', 'djamin', 'helsens',
                         'jhrdinka', 'jkiesele', 'novaj', 'rastein', 'selvaggi',
                         'vavolkl');
@@ -95,7 +96,7 @@
       if (array_key_exists("cross-section", $sample)) {
         $sample['cross-section'] = (float) $sample['cross-section'];
       }
-      $sample['n-files'] = (int) str_replace(',', '', $sample['n-files']);
+      $sample['n-files-good'] = (int) str_replace(',', '', $sample['n-files-good']);
       $sample['n-files-bad'] = (int) str_replace(',', '', $sample['n-files-bad']);
       $sample['n-files-eos'] = (int) str_replace(',', '', $sample['n-files-eos']);
     }
@@ -103,7 +104,7 @@
     $totalInfo = array();
     if ($evtType === 'gen') {
       $totalInfo['n-events'] = (int) str_replace(',', '', $totalArr[1]);
-      $totalInfo['n-files'] = (int) str_replace(',', '', $totalArr[2]);
+      $totalInfo['n-files-good'] = (int) str_replace(',', '', $totalArr[2]);
       $totalInfo['n-files-bad'] = (int) str_replace(',', '', $totalArr[3]);
       $totalInfo['n-files-eos'] = (int) str_replace(',', '', $totalArr[4]);
       $totalInfo['size'] = (float) $totalArr[5];
@@ -111,14 +112,14 @@
     if ($evtType === 'delphes') {
       $totalInfo['n-events'] = (int) str_replace(',', '', $totalArr[1]);
       $totalInfo['sum-of-weights'] = (float) str_replace(',', '', $totalArr[2]);
-      $totalInfo['n-files'] = (int) str_replace(',', '', $totalArr[3]);
+      $totalInfo['n-files-good'] = (int) str_replace(',', '', $totalArr[3]);
       $totalInfo['n-files-bad'] = (int) str_replace(',', '', $totalArr[4]);
       $totalInfo['n-files-eos'] = (int) str_replace(',', '', $totalArr[5]);
       $totalInfo['size'] = (float) $totalArr[6];
     }
     if ($evtType === 'full-sim' && $acc === 'fcc-hh') {
       $totalInfo['n-events'] = (int) str_replace(',', '', $totalArr[1]);
-      $totalInfo['n-files'] = (int) str_replace(',', '', $totalArr[2]);
+      $totalInfo['n-files-good'] = (int) str_replace(',', '', $totalArr[2]);
       $totalInfo['n-files-eos'] = (int) str_replace(',', '', $totalArr[3]);
       $totalInfo['n-files-bad'] = (int) str_replace(',', '', $totalArr[4]);
       $totalInfo['size'] = (float) $totalArr[5];
@@ -195,7 +196,7 @@
                       if ($sample['cross-section'] < 0.) {
                         echo 'Unknown';
                       } else {
-                        echo sprintf('%g', $sample['cross-section']), ' pb';
+                        echo sprintf('%g', $sample['cross-section']), '&nbsp;pb';
                       } ?>
                   </div>
                   <?php endif ?>
@@ -242,8 +243,8 @@
                 <div class="row">
                   <!-- Number of files produced-->
                   <div class="col p-3 text-left">
-                    <b>Number of files produced</b><br>
-                    <?php echo number_format($sample['n-files'], 0, '.', '&thinsp;'); ?>
+                    <b>Number of files</b><br>
+                    <?php echo number_format($sample['n-files-good'], 0, '.', '&thinsp;'); ?>
                   </div>
                   <!-- Number of corrupted files -->
                   <div class="col p-3 text-left">
@@ -258,7 +259,13 @@
                   <!-- Total size -->
                   <div class="col p-3 text-left">
                     <b>Total size</b><br>
-                    <?php echo number_format($sample['size'], 2, '.', '&thinsp;'); ?> GB
+                    <?php
+                      if ($loadedFromJSON) {
+                        echo number_format($sample['size'] / 1024 / 1024 / 1024, 2, '.', '&thinsp;'), '&nbsp;GiB';
+                      } else {
+                        echo number_format($sample['size'], 2, '.', '&thinsp;'), '&nbsp;GB';
+                      }
+                    ?>
                   </div>
                 </div>
                 <div class="row">
@@ -334,8 +341,8 @@
             </tr>
             <?php endif ?>
             <tr>
-              <td>Number of produced files</td>
-              <td><?php echo number_format($totalInfo['n-files'], 0, '.', '&thinsp;'); ?></td>
+              <td>Number of files</td>
+              <td><?php echo number_format($totalInfo['n-files-good'], 0, '.', '&thinsp;'); ?></td>
             </tr>
             <tr>
               <td>Number of corrupted files</td>
@@ -347,7 +354,14 @@
             </tr>
             <tr>
               <td>Total size</td>
-              <td><?php echo number_format($totalInfo['size'], 2, '.', '&thinsp;'); ?> GB</td>
+              <td>
+                <?php
+                  if ($loadedFromJSON) {
+                    echo number_format($totalInfo['size'] / 1024 / 1024 / 1024, 2, '.', '&thinsp;'), '&nbsp;GiB';
+                  } else {
+                    echo number_format($totalInfo['size'], 2, '.', '&thinsp;'), '&nbsp;GB';
+                  } ?>
+              </td>
             </tr>
             <?php if (array_key_exists('produced-by', $totalInfo)): ?>
             <tr>
