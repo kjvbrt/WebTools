@@ -1,12 +1,11 @@
 <?php
-require('../../config.php');
+require('../../../../config.php');
 
-$layer = 'campaign';
+$layer = 'table';
 $acc = 'fcc-ee';
 $evtType = 'full-sim';
-$genType = 'none';
-$campaign = 'none';
-$det = 'none';
+$campaign = 'test-spring2024';
+$det = 'cld-o2-v05';
 ?>
 
 
@@ -15,13 +14,15 @@ $det = 'none';
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Full Sim | FCC-ee | FCC Physics Events</title>
+    <title>CLD o2 v05 | Test: Spring 2024 | Full Sim | FCC-ee | FCC Physics Events</title>
 
     <link rel="icon" type="image/x-icon" href="<?= BASE_URL ?>/images/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
           crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/style/fcc.css">
   </head>
 
@@ -29,11 +30,9 @@ $det = 'none';
     <?php include BASE_PATH . '/header.php'; ?>
 
     <article id="sample-article" class="container-lg">
-      <h1 class="mt-5">FCC-ee | Full Sim Samples</h1>
+      <h1 class="mt-5">FCC-ee | Full Sim | Test: Spring 2024 | CLD o2 v05 Samples</h1>
 
-      <div class="list-group mt-3">
-        <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/fcc-ee/full-sim/test-spring2024/cld-o2-v05">Test: Spring 2024 | CLD o2 v05</a>
-      </div>
+      <?php include BASE_PATH . '/includes/table-dirac.php'; ?>
     </article>
 
     <?php include BASE_PATH . '/footer.php'; ?>

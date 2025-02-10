@@ -180,10 +180,16 @@
                   <a class="ms-1 nav-link text-light<?php if ($evtType === 'full-sim'): ?> active bg-green<?php endif ?>" href="<?= BASE_URL ?>/fcc-ee/full-sim/index.php">Full Sim</a>
                 </li>
               <?php endif ?>
-              <!-- FCC-ee | Full Sim | Devel -->
+              <!-- FCC-ee | Full Sim | Test: Spring 2024 -->
               <?php if ($evtType === 'full-sim'): ?>
                 <li class="nav-item">
-                  <a class="ms-1 nav-link text-light<?php if ($campaign === 'devel'): ?> active bg-green<?php endif ?>" href="<?= BASE_URL ?>/fcc-ee/full-sim/devel/">Devel</a>
+                  <a class="ms-1 nav-link text-light<?php if ($campaign === 'test-spring2024'): ?> active bg-green<?php endif ?>" href="<?= BASE_URL ?>/fcc-ee/full-sim/test-spring2024">Test: Spring 2024</a>
+                </li>
+              <?php endif ?>
+              <!-- FCC-ee | Full Sim | Test: Spring 2024 | CLD o2 v05-->
+              <?php if ($layer === 'detector' || $det === 'cld-o2-v05'): ?>
+                <li class="nav-item">
+                  <a class="ms-1 nav-link text-light<?php if ($det === 'cld-o2-v05'): ?> active bg-green<?php endif ?>" href="<?= BASE_URL ?>/fcc-ee/full-sim/test-spring2024/cld-o2-v05">CLD o2 v05</a>
                 </li>
               <?php endif ?>
             <?php endif ?>

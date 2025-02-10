@@ -42,7 +42,7 @@ $det = 'none';
         <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/fcc-ee/delphes/spring2021">Delphes | Spring 2021</a>
         <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/fcc-ee/delphes/spring2021-training">Delphes | Spring 2021&ndash;training</a>
         <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/fcc-ee/delphes/dev">Delphes | Dev</a>
-        <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/fcc-ee/full-sim">Full Sim</a>
+        <a class="list-group-item list-group-item-action" href="<?= BASE_URL ?>/fcc-ee/full-sim/test-spring2024/cld-o2-v05/">Full Sim | Test: Spring 2024 | CLD o2 v05</a>
       </div>
 
       <?php include BASE_PATH . '/includes/k4h-stack.php'; ?>
