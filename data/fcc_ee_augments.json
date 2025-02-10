@@ -67,6 +67,27 @@
     },
     "16783": {
       "name": "hbb-lcfijet"
+    },
+    "16805": {
+      "name": "htautau-lcfijet-beam-spot-dec-2022"
+    },
+    "16806": {
+      "name": "hgg-lcfijet-beam-spot-dec-2022"
+    },
+    "16807": {
+      "name": "hdd-lcfijet-beam-spot-dec-2022"
+    },
+    "16808": {
+      "name": "huu-lcfijet-beam-spot-dec-2022"
+    },
+    "16809": {
+      "name": "hss-lcfijet-beam-spot-dec-2022"
+    },
+    "16810": {
+      "name": "hcc-lcfijet-beam-spot-dec-2022"
+    },
+    "16811": {
+      "name": "hbb-lcfijet-beam-spot-dec-2022"
     }
   }
 }
